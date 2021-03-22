@@ -1,35 +1,37 @@
 # Project 3 - Neural Networks
-## Due 03/19/2021
+# Due 03/22/2021
 
 ![BuildStatus](https://github.com/rle1323/Project3/workflows/HW3/badge.svg?event=push)
 
-### main
+## main
 Runs all code in scripts/\_\_main\_\_.py, useful for part 2
 ```
 python -m scripts
 ```
 
-### testing
+## testing
 Testing is as simple as running
 ```
 python -m pytest test/*
 ```
 from the root directory of this project.
 
-### API Documentation
+## API Documentation
 
-#### Neural Network Documentation
+### Neural Network Documentation
 
 A neural network can be initialized with a NeuralNetwork() class object, and it's architecture is defined as a list of DenseLayer objects. Further documentation for both of these classes and their methods are below. A NeuralNetwork object can be trained with the fit() method, and predictions can be made with the predict() method.
 
-##### class NeuralNetwork:
+#### class NeuralNetwork:
 This is a class that performs all of the functions of a basic neural network. A neural network is simply a series of layers that transform a numeric input into 
 an output of certain shape. These transformations can be learned to optimize a loss function, and can therefore be used to learn complex, non-linear functions. 
 A lot of the methods in this particular class are simply wrappers of methods of individual layers, from the DenseLayer class. I designed it this way intentionally to break the neural network and its methods into modular components that can be easily understood on their own. 
-###### Methods
+
+##### NeuralNetwork Class Methods
 
 __init__(self, architecture=[DenseLayer(68,25,f.sigmoid), DenseLayer(25,1,f.sigmoid)],lr=.05,seed=1,loss_function = "mse"):
         Initializes a NeuralNetwork object.
+        
         Arguments:
                 architecture::[DenseLayer()]
                         List of DenseLayer objects that together make up the design of the network. Each layer has an input shape, layer size, and activation 
@@ -39,10 +41,11 @@ __init__(self, architecture=[DenseLayer(68,25,f.sigmoid), DenseLayer(25,1,f.sigm
                 seed::int
                         Seed for random function seeding
                 loss_function::str
-                        Loss function that the network optimizes with respect to. The available options in my implementation are mean-squared error, passed as "mse", or binary cross-entrpy, passed as "bce". 
-        
-Returns:
-        None
+                        Loss function that the network optimizes with respect to. The available options in my implementation are mean-squared error, passed as 
+                        "mse", or binary cross-entrpy, passed as "bce". 
+
+        Returns:
+                None
 ```
 
 class DenseLayer:
