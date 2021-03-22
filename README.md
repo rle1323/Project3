@@ -71,7 +71,7 @@ feedforward(self, input, predict=False):
             output::np.asarray(float)
                 Output of the neural net for the given input. Will be the size determined in the output layer of the network.
 
-def backprop(self, error_prime):
+backprop(self, error_prime):
         Coordinates backpropogation between all of the layers in the neural network. Basically a wrapper for the individual DenseLayer classes held in 
         self.architecture.
 
@@ -82,13 +82,62 @@ def backprop(self, error_prime):
         
         Returns:
             None
+
+fit(self, x, y, max_epochs=2000, mini_batch_negatives=False, print_losses=True):
+        Fits a neural network on the training examples provided in x, with their labels in y. 
+
+        Arguments:
+            x::np.asarray([int])
+                List of observations that the network is trained on. Each observation should be a list holding a one-hot encoding of a DNA sequence
+            y::np.asarray(int)
+                Array holding the true labels for the observations in x
+            max_epochs::int (optional)
+                Number of epochs that the network will be trained.
+            mini_batch_negatives::bool (optional)
+                Flag telling whether or not the negative examples should be separately mini-batched. This feature is necessary because in the test-case 
+                provided, the negative examples outweigh the positives by a factor of ~30,000.
+            print_losses::bool (optional)
+                Flag telling whether or not you want the training loss to be printed every 5 epochs.
+        
+        Returns:
+            losses::[float]
+                The average loss of the network for each training epoch
+
+predict(self, x):
+        Generates a prediction from the network for a given input. This should only be called after fitting. 
+
+        Arguments:
+            x::np.asarray(float)
+                Input vector that prediction is being generated for
+        
+        Returns:
+            network_output::float
+                Prediction for x
+
+mini_batch_negatives(x, y):
+        Static method that performs mini-batching of the negative examples, for reasons described in the fit method documentation.
+
+        Arguments:
+            x::np.asarray([float])
+                Full training set (includes both positive and negative examples)
+            y::np.asarray(float)
+                Labels for the training set stored in x
+            
+        Returns:
+            batch::np.asarray([float])
+                A batch that is twice the size of the number of positive examples in x (holds an equal number of positive and negative examples). 
+                The negative examples in the batch are randomly sampled from the training set. 
 ```
 
-class DenseLayer:
-    This is a class that represents a fully connected layer in a neural network. A list of these layers defines an architecture for a "NeuralNetwork" object 
-    defined later in this script.
-    
-    method __init__(self, input_size, layer_size, activation_function="sigmoid", regularization="None", lamba=.2):
+
+#### class DenseLayer:
+This is a class that represents a fully connected layer in a neural network. A list of these layers defines an architecture for a "NeuralNetwork" object.
+
+
+##### DenseLayer Class Methods
+```
+__init__(self, input_size, layer_size, activation_function="sigmoid", regularization="None", lamba=.2):
+        """
         Initializes a DenseLayer object.
 
         Arguments:
@@ -99,15 +148,43 @@ class DenseLayer:
                 Number of nodes in this layer. 
             activation_function::str (optional)
                 String defining the non-linear activation function to be used in the nodes of this layer. The options in this implemenation are "sigmoid" and 
-                "relu". If not supplied, defaults to "sigmoid"
+                "relu".
+                If not supplied, defaults to "sigmoid"
             regularization::str (optional)
-                String defining the regularization function to be used on the outgoing weights of this layer. The options in this implementation are "None", "L2",   
+                String defining the regularization function to be used on the outgoing weights of this layer. The options in this implementation are "None", "L2", 
                 and "Dropout".
                 If not supplied, defaults to "None"
             lambda::float (optional)
                 Regularization parameter that weights the regularization if using L2, or defines the dropout rate if using dropout. If not supplied, defaults to .2
+
         Returns:
-            None
+            None 
+            
+feedforward(self, input, predict=False):
+        """
+        Performs the feedforward steps for this specific layer of the neural network. In other words, takes an input and re-weights it by the learned weights for 
+        this layer, and applies the learned bias, followed by activation. Then passes this re-weighted vector as an output.
 
+        Arguments:
+            input::np.array(float)
+                Array of input values to this layer. 
+            predict::bool
+                Flag for whether this function is being used in training or prediction. If prediction, we don't want to apply regularization (if regularization is 
+                used)
+        
+        Returns:
+            output::np.array(float)
+                Array of output values for this layer after re-weighting, bias adjustment, and activation.
 
+backprop(self, output_error, learning_rate):
+        Performs the backpropogation steps for this specific layer of the neural network. In other words, takes a loss from the previous layer (or the derivative 
+        of the loss of a training step), and applies the chain rule to the parameters with respect to the loss function.
+        Arguments:
+            output_error::np.array(float)
+                Array of losses of the previous layer 
+            learning_rate::float
+                Hyperparameter for how much the weights are adjusted in each backpropogation. 
+        Returns:
+            backpropogate_error::np.array(float)
+                Array of loss to be backpropogated to the next layer in the network. 
 ```
