@@ -47,6 +47,41 @@ __init__(self, architecture=[DenseLayer(68,25,f.sigmoid), DenseLayer(25,1,f.sigm
 
         Returns:
                 None
+
+_make_weights(self):
+        Initializes all of the weights and biases in the neural network to random values between -1 and 1
+        
+        Arguments:
+            None
+        
+        Returns:
+            None
+
+feedforward(self, input, predict=False):
+        Takes an input vector and feeds it through the neural net to get it's corresponding output. If the neural net is thought of as a complex function,
+        this is the equivalent of just calling the function on an input.
+
+        Arguments:
+            input::np.asarray(float)
+                Input vector that is being fed through the network. Must be flat and of the same size as the input layer of the network
+            predict::bool
+                Flag to mark whether this method is being called during training or prediction. This affects whether weights are regularized. 
+        
+        Returns:
+            output::np.asarray(float)
+                Output of the neural net for the given input. Will be the size determined in the output layer of the network.
+
+def backprop(self, error_prime):
+        Coordinates backpropogation between all of the layers in the neural network. Basically a wrapper for the individual DenseLayer classes held in 
+        self.architecture.
+
+        Arguments:
+            error_prime::float
+                Result of the derivative of the loss function applied to the output of the network compared to the true labels. Should be precalculated in
+                self.fit()
+        
+        Returns:
+            None
 ```
 
 class DenseLayer:
