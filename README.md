@@ -31,22 +31,25 @@ A lot of the methods in this particular class are simply wrappers of methods of 
 
 ```
 __init__(self, architecture=[DenseLayer(68,25,f.sigmoid), DenseLayer(25,1,f.sigmoid)],lr=.05,seed=1,loss_function = "mse"):
+        """
         Initializes a NeuralNetwork object.
-        
-        Arguments:
-                architecture::[DenseLayer()]
-                        List of DenseLayer objects that together make up the design of the network. Each layer has an input shape, layer size, and activation 
-                        function assigned to it. Regularization can be optionally added on a layer by layer basis
-                lr::float
-                        Learning rate, which determines how much weights are adjusted during backpropogation. This param should be tuned
-                seed::int
-                        Seed for random function seeding
-                loss_function::str
-                        Loss function that the network optimizes with respect to. The available options in my implementation are mean-squared error, passed as 
-                        "mse", or binary cross-entrpy, passed as "bce". 
 
+        Arguments:
+            archtecture::[DenseLayer()]
+                List of DenseLayer objects that together make up the design of the network. Each layer has an input shape, layer size, and activation function 
+                assigned to it.
+                Regularization can be optionally added on a layer by layer basis
+            lr::float
+                Learning rate, which determines how much weights are adjusted during backpropogation. This param should be tuned
+            seed::int
+                Seed for random function seeding
+            loss_function::str
+                Loss function that the network optimizes with respect to. The available options in my implementation are mean-squared error, passed as "mse", or 
+                binary cross-entrpy, passed as "bce". 
+        
         Returns:
-                None
+            None
+
 
 _make_weights(self):
         Initializes all of the weights and biases in the neural network to random values between -1 and 1
@@ -56,6 +59,7 @@ _make_weights(self):
         
         Returns:
             None
+
 
 feedforward(self, input, predict=False):
         Takes an input vector and feeds it through the neural net to get it's corresponding output. If the neural net is thought of as a complex function,
@@ -71,6 +75,7 @@ feedforward(self, input, predict=False):
             output::np.asarray(float)
                 Output of the neural net for the given input. Will be the size determined in the output layer of the network.
 
+
 backprop(self, error_prime):
         Coordinates backpropogation between all of the layers in the neural network. Basically a wrapper for the individual DenseLayer classes held in 
         self.architecture.
@@ -82,6 +87,7 @@ backprop(self, error_prime):
         
         Returns:
             None
+
 
 fit(self, x, y, max_epochs=2000, mini_batch_negatives=False, print_losses=True):
         Fits a neural network on the training examples provided in x, with their labels in y. 
@@ -103,6 +109,7 @@ fit(self, x, y, max_epochs=2000, mini_batch_negatives=False, print_losses=True):
             losses::[float]
                 The average loss of the network for each training epoch
 
+
 predict(self, x):
         Generates a prediction from the network for a given input. This should only be called after fitting. 
 
@@ -113,6 +120,7 @@ predict(self, x):
         Returns:
             network_output::float
                 Prediction for x
+
 
 mini_batch_negatives(x, y):
         Static method that performs mini-batching of the negative examples, for reasons described in the fit method documentation.
