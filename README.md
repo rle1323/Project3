@@ -29,6 +29,7 @@ A lot of the methods in this particular class are simply wrappers of methods of 
 
 ##### NeuralNetwork Class Methods
 
+```
 __init__(self, architecture=[DenseLayer(68,25,f.sigmoid), DenseLayer(25,1,f.sigmoid)],lr=.05,seed=1,loss_function = "mse"):
         Initializes a NeuralNetwork object.
         
