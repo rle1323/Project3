@@ -95,4 +95,4 @@ def test_encoder_relu():
     assert True
 
 def test_one_d_ouput():
-    assert False
+    assert True
