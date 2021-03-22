@@ -273,7 +273,11 @@ class NeuralNetwork:
                 Prediction for x
         """
         x = np.asarray([x])
-        network_output = self.feedforward(x, predict=True)[0][0]
+        network_output = self.feedforward(x, predict=True)
+        if network_output.shape == (1,1):
+            network_output = network_output[0][0]
+        else:
+            network_output = network_output[0]
         return network_output
     
     @staticmethod

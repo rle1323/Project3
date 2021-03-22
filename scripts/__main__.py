@@ -11,6 +11,7 @@ import matplotlib.pyplot as plt
 # set seeds for reproducibility
 random.seed(1)
 np.random.seed(1)
+
 '''
 ############################# PART 1 #####################################
 # DESCRIPTION: TRAINING AND TESTING 8X3X8 AUTOENCODER ON 8X8 IDENTITY MATRIX
@@ -31,7 +32,7 @@ losses = bit_autoencoder.fit(x = identity, y = identity, max_epochs=50000)
 predictions = []
 for vec in identity:
     prediction = bit_autoencoder.predict(vec)
-    predictions.append(prediction[0])
+    predictions.append(prediction)
 
 
 # plot each prediction vector as a barplot
@@ -50,6 +51,7 @@ plt.scatter(epochs, losses, s = 20)
 plt.xlabel('Epoch')
 plt.ylabel("Loss (MSE)")
 plt.show()
+
 
 # Part 1 complete
 ############################# PART 2 #####################################
