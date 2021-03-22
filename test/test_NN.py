@@ -88,11 +88,33 @@ def test_line_reader():
     assert len(seqs) == 137
 
 
-def test_encoder():
-    assert True
 
-def test_encoder_relu():
-    assert True
+### TESTING NEURAL NETWORK
+def test_encoder_output():
+    identity = np.identity(8)
+    # make the autoencoder
+    bit_autoencoder = NN.NeuralNetwork(architecture = [NN.DenseLayer(8,3, "sigmoid"), NN.DenseLayer(3,8, "sigmoid")])
+    for seq in identity:
+        prediction = bit_autoencoder.predict(seq)
+        for entry in prediction:
+            assert (entry > 0 and entry < 1)
 
-def test_one_d_ouput():
-    assert True
+def test_encoder_output_shape():
+    identity = np.identity(8)
+    # make the autoencoder
+    bit_autoencoder = NN.NeuralNetwork(architecture = [NN.DenseLayer(8,3, "sigmoid"), NN.DenseLayer(3,8, "sigmoid")])
+    for seq in identity:
+        prediction = bit_autoencoder.predict(seq)
+        assert prediction.shape == (8,)
+
+def test_classifier_output():
+    positive_seqs = io.line_reader("data/rap1-lieb-positives.txt")
+    ohe = [f.dna_onehot(seq) for seq in positive_seqs]
+    test_nn = NN.NeuralNetwork(architecture = [NN.DenseLayer(68,3, "sigmoid"), NN.DenseLayer(3,1, "sigmoid")])
+    for seq in ohe:
+        prediction = test_nn.predict(seq)
+        # the result of an untrained network should be between 0 and 1
+        assert (prediction > 0 and prediction < 1)
+
+
+# all other testing was done by script-testing
