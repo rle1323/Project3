@@ -18,6 +18,8 @@ from the root directory of this project.
 
 ## API Documentation
 
+The documentation for the API is broken into three parts: Documentation for the classes pertaining to the Neural Network implementation, documentation for utility functions contained in scripts/functions.py, and documentation for the data I/O functions made for this project. 
+
 ### Neural Network Documentation
 
 A neural network can be initialized with a NeuralNetwork() class object, and it's architecture is defined as a list of DenseLayer objects. Further documentation for both of these classes and their methods are below. A NeuralNetwork object can be trained with the fit() method, and predictions can be made with the predict() method.
@@ -195,4 +197,210 @@ backprop(self, output_error, learning_rate):
         Returns:
             backpropogate_error::np.array(float)
                 Array of loss to be backpropogated to the next layer in the network. 
+```
+
+### Utility Function Documentation
+
+```
+sigmoid(x):
+    Expression that calculates the sigmoid of a number x
+    This is used as a non-linear activation function.
+
+    Arguments:
+        x::float or np.array(float)
+            Scalar or array of scalars that expression is performed on
+    
+    Returns::
+        y::float or np.array(float)
+            Result of sigmoid(x)
+
+
+sigmoid_prime(x):
+    Expression that calculates the derivative function of sigmoid of a number x
+    The integral of this function is used as a non-linear activation function, and this derivative function is called in backpropogation
+    
+    Arguments:
+        x::float or np.array(float)
+            Scalar or array of scalars that expression is performed on
+    
+    Returns::
+        y::float or np.array(float)
+            Result of sigmoid(x)
+            
+            
+relu(x):
+    Expression that calculates the ReLU function of a scalar. ReLU(x) = x if x > 0, and 0 if x <= 0.
+    This is used as a non-linear activation function.
+    
+    Arguments:
+        x::float or np.array(float)
+            Scalar or array of scalars that expression is performed on
+    
+    Returns::
+        y::float or np.array(float)
+            Result of relu(x)
+            
+            
+relu_prime(x):
+    Expression that calculates the derivative of the ReLU function of a scalar.
+    The integral of this function is used as a non-linear activation function, and this derivative function is called in backpropogation
+    
+    Arguments:
+        x::float or np.array(float)
+            Scalar or array of scalars that expression is performed on
+    
+    Returns::
+        y::float or np.array(float)
+            Result of relu(x)
+       
+mse(y, y_hat):
+    Calculates the mean-squared error between a prediction and true value
+
+    Arguments:
+        y::np.array(float)
+            Ground truth labels
+        y_hat::np.array(float) 
+            Predicted labels
+    
+    Returns:
+        mse::float
+            Mean-squared error calculated
+            
+            
+mse_prime(y, y_hat):
+    Expression that calculates the derivative function of mse of a prediction, given the predicted and true values
+    
+    Arguments:
+        y::np.array(float)
+            Ground truth labels
+        y_hat::np.array(float) 
+            Predicted labels
+    
+    Returns:
+        mse_prime::float
+            Mean-squared prime calculated
+
+
+binary_cross_entropy(y, y_hat):
+    Calculates the mean-squared error between a prediction and true value. This function is used as a neural network loss function
+
+    Arguments:
+        y::np.array(float)
+            Ground truth labels
+        y_hat::np.array(float) 
+            Predicted labels
+    
+    Returns:
+        bce::float
+            Binary cross-entropy calculated
+
+
+binary_cross_entropy_prime(y, y_hat):
+    Expression that calculates the derivative function of binary cross-entropy of a prediction, given the predicted and true values. 
+    
+    Arguments:
+        y::np.array(float)
+            Ground truth labels
+        y_hat::np.array(float) 
+            Predicted labels
+    
+    Returns:
+        bce_prime::float
+            Binary cross-entropy prime calculated
+
+
+dna_onehot(dna):
+    One-hot encodes the provided DNA sequence and returns the one-hot encoding
+
+    Arguments:
+        dna::str
+            Sequence to be encoded
+    
+    Returns:
+        onehot::np.array(int)
+            List of 1's and 0's of representing the one-hot encoding
+            
+            
+split_negatives(negative_seqs):
+    Takes in a list of DNA sequences, and breaks up each sequence into a list of 17-mers. If the original sequence is shorter 
+    than 17 bp it is thrown away. Returns a list of 17-mers, without duplicates
+
+    Arguments:
+        negative_seqs::[str]
+            List of negative binding sequences to be split apart.
+    
+    Returns:
+        negative_17mers::[str]
+            List of all 17-mers that are subsequences of the sequences in negative_seqs. No duplicates. 
+            
+            
+train_test_split(x, train_proportion=.9):
+    Given a dataset with n observations, splits it into a training dataset of length train_proportion*n and testing dataset of length (1-train_proportion)*n.
+    Note: This function only works if all the observations in the dataset are unique. I intentionally make that the case in my data pre-processing
+
+    Arguments:
+        x::[any]
+            Dataset to be split
+    
+    Returns:
+        train_set::[any]
+            Training dataset consisting of train_proportion*n observations randomly sampled from the input dataset
+        test_set::[any]
+            Testing dataset consisting of (1-train_proportion)*n observations. Is all of the observations from x that are not in train_set.
+            
+            
+kfold_CV(x, k=5):
+    Folds an input dataset for k-fold cross-validation. Each fold will have a test dataset of length len(x)/k, and a training set of len(x) - len(test dataset).
+    Each of the k test datasets generated are mutually exclusive with one another (no overlap of observations)
+
+    Arguments:
+        x::[any]
+            Dataset to be folded 
+    
+    Returns:
+        folds::[([any], [any])]
+            List of tuples, each tuple being one of the k folds holding a training set and a testing set. The training set of each fold is in position 0 of its 
+            tuple, and the testing set of each fold is in position 1 of its tuple
+```
+
+### Data I/O Function Documentation
+
+```
+fasta_reader(filepath):
+    Reads in a fasta file located at the filepath and returns a list of the sequences in the file
+
+    Arguments:
+        filepath::str
+            The path to the fasta file that is being read
+    
+    Returns:
+        sequences::[string]
+            List of strings representing the DNA sequences encoded in the fasta file
+            
+            
+line_reader(filepath):
+    Reads in a sequence file holding one sequence per line. Returns a list of these sequences
+    
+    Arguments:
+        filepath::str
+            The path to the sequence file that is being read
+    
+    Returns:
+        sequences::[string]
+            List of strings representing the DNA sequences encoded in the sequence file
+
+
+write_output(outfile_path, sequences, predictions):
+    Specific function for writing out the data for part 5 in the requested format (2 columns, first column is the sequence, second is the predicted value)
+    
+    Arguments:
+        outfile_path::str
+            The desired path of the output file
+        sequences::[str]
+            List of the sequences (in DNA string format) that have had predictions performed for them.
+        predictions::[float]
+            List of predicted values for the sequences in "sequences". Must be in the same order and the same length of the sequences list
+
+    Returns:
+        None
 ```
